@@ -24,16 +24,17 @@ export default function ChatApp() {
   const onLogin = async () => {
     try {
       const database = getDatabase();
-      //first check if the user registered before
+      // Kiểm tra nếu user đã đăng kí trc đó
 
       const user = await findUser(username);
 
-      //create a new user if not registered
+      //  nếu user chưa đăng kí thi tạo mới
       if (user) {
         setMyData(user);
       } else {
         const newUserObj = {
           username: username,
+          // Random ảnh user (avatar) khi nào mới 1 user 
           avatar: 'https://i.pravatar.cc/150?u=' + Date.now(),
         };
 
@@ -41,7 +42,7 @@ export default function ChatApp() {
         setMyData(newUserObj);
       }
 
-      // set friends list change listener
+      // Thiết lập bạn bè 
       const myUserRef = ref(database, `users/${username}`);
       onValue(myUserRef, snapshot => {
         const data = snapshot.val();
@@ -72,14 +73,14 @@ export default function ChatApp() {
 
   const onAddFriend = async name => {
     try {
-      //find user and add it to my friends and also add me to his friends
+      // Tìm kiếm user và thêm vào danh sách bạn 
       const database = getDatabase();
 
       const user = await findUser(name);
 
       if (user) {
         if (user.username === myData.username) {
-          // don't let user add himself
+          // Kiểm tra nếu user đó giống với chủ acc thì sẽ ko add bạn
           return;
         }
 
@@ -87,11 +88,11 @@ export default function ChatApp() {
           myData.friends &&
           myData.friends.findIndex(f => f.username === user.username) > 0
         ) {
-          // don't let user add a user twice
+          // Ko add bạn 2 lần
           return;
         }
 
-        // create a chatroom and store the chatroom id
+        // Tạo 1 phòng chat 
 
         const newChatroomRef = push(ref(database, 'chatrooms'), {
           firstUser: myData.username,
@@ -102,7 +103,7 @@ export default function ChatApp() {
         const newChatroomId = newChatroomRef.key;
 
         const userFriends = user.friends || [];
-        //join myself to this user friend list
+
         update(ref(database, `users/${user.username}`), {
           friends: [
             ...userFriends,
@@ -115,7 +116,7 @@ export default function ChatApp() {
         });
 
         const myFriends = myData.friends || [];
-        //add this user to my friend list
+        //Thêm user vào danh sách bạn bè (sẽ show khi login)
         update(ref(database, `users/${myData.username}`), {
           friends: [
             ...myFriends,

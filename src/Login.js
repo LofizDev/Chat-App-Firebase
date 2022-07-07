@@ -4,7 +4,7 @@ import {Button, ImageBackground, StyleSheet, TextInput, View} from 'react-native
 export default function Login({onLogin, username, setUsername}) {
 
   return (
-     
+    //  Ảnh nền Trang login
       <ImageBackground source={{uri: 'https://images.pexels.com/photos/12640006/pexels-photo-12640006.jpeg?auto=compress&cs=tinysrgb&w=1260&h=750&dpr=1'}}
           style={{ flex: 1,
             width: null,

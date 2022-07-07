@@ -1,7 +1,7 @@
 import React from 'react';
 import ChatApp from './src/ChatApp';
 
-import {initializeApp} from 'firebase/app';
+import {initializeApp} from 'firebase/app';zz
 const firebaseConfig = {
   apiKey: xxxxxxxxxxxxxxxxxxxxxxxxxxx,
   authDomain:xxxxxxxxxxxxxxxxxxxxxxxxxx,

@@ -7,7 +7,7 @@ export default function Chat({onBack, myData, selectedUser}) {
   const [messages, setMessages] = useState([]);
 
   useEffect(() => {
-    //load old messages
+    // get tin nhắn cũ
     const loadData = async () => {
       const myChatroom = await fetchMessages();
 
@@ -16,7 +16,7 @@ export default function Chat({onBack, myData, selectedUser}) {
 
     loadData();
 
-    // set chatroom change listener
+    // Sự kiện thay đổi phòng chat
     const database = getDatabase();
     const chatroomRef = ref(database, `chatrooms/${selectedUser.chatroomId}`);
     onValue(chatroomRef, snapshot => {
@@ -25,22 +25,14 @@ export default function Chat({onBack, myData, selectedUser}) {
     });
 
     return () => {
-      //remove chatroom listener
+      
       off(chatroomRef);
     };
   }, [fetchMessages, renderMessages, selectedUser.chatroomId]);
 
   const renderMessages = useCallback(
     msgs => {
-      //structure for chat library:
-      // msg = {
-      //   _id: '',
-      //   user: {
-      //     avatar:'',
-      //     name: '',
-      //     _id: ''
-      //   }
-      // }
+    
 
       return msgs
         ? msgs.reverse().map((msg, index) => ({
@@ -83,10 +75,9 @@ export default function Chat({onBack, myData, selectedUser}) {
 
   const onSend = useCallback(
     async (msg = []) => {
-      //send the msg[0] to the other user
       const database = getDatabase();
 
-      //fetch fresh messages from server
+      // Lấy tin nhắn từ server firebase
       const currentChatroom = await fetchMessages();
 
       const lastMessages = currentChatroom.messages || [];
